@@ -1,0 +1,108 @@
+abstract class MediaFile {
+   String fileName;
+   double duration;
+   double fileSize;
+ 
+   // Constructor
+   MediaFile(String fileName, double duration, double fileSize) {
+       this.fileName = fileName;
+       this.duration = duration;
+       this.fileSize = fileSize;
+   }
+ 
+   // Abstract Methods
+   abstract void play();
+   abstract void pause();
+   abstract void stop();
+}
+ 
+// AudioFile Class
+class AudioFile extends MediaFile {
+ 
+   AudioFile(String fileName, double duration, double fileSize) {
+       super(fileName, duration, fileSize);
+   }
+ 
+   void play() {
+       System.out.println("Playing audio file: " + fileName);
+   }
+ 
+   void pause() {
+       System.out.println("Pausing audio file: " + fileName);
+   }
+ 
+   void stop() {
+       System.out.println("Stopping audio file: " + fileName);
+   }
+}
+ 
+// VideoFile Class
+class VideoFile extends MediaFile {
+ 
+   VideoFile(String fileName, double duration, double fileSize) {
+       super(fileName, duration, fileSize);
+   }
+ 
+   void play() {
+       System.out.println("Playing video file: " + fileName);
+   }
+ 
+   void pause() {
+       System.out.println("Pausing video file: " + fileName);
+   }
+ 
+   void stop() {
+       System.out.println("Stopping video file: " + fileName);
+   }
+}
+ 
+// LiveStream Class
+class LiveStream extends MediaFile {
+ 
+   LiveStream(String fileName, double duration, double fileSize) {
+       super(fileName, duration, fileSize);
+   }
+ 
+   void play() {
+       System.out.println("Streaming live: " + fileName);
+   }
+ 
+   void pause() {
+       System.out.println("Live stream paused: " + fileName);
+   }
+ 
+   void stop() {
+       System.out.println("Live stream stopped: " + fileName);
+   }
+}
+ 
+// Test Class
+public class MediaPlayerTest {
+   public static void main(String[] args) {
+ 
+       // Polymorphism using MediaFile reference
+       MediaFile m;
+ 
+       // Audio
+       m = new AudioFile("song.mp3", 3.5, 5);
+       m.play();
+       m.pause();
+       m.stop();
+ 
+       System.out.println("----------------------");
+ 
+       // Video
+       m = new VideoFile("movie.mp4", 120, 700);
+       m.play();
+       m.pause();
+       m.stop();
+ 
+       System.out.println("----------------------");
+ 
+       // Live Stream
+       m = new LiveStream("Live News", 0, 0);
+       m.play();
+       m.pause();
+       m.stop();
+   }
+}
