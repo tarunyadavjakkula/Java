@@ -1,0 +1,65 @@
+package week12b;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class IntegerDivision extends JFrame implements ActionListener {
+
+    JTextField num1, num2, result;
+    JButton divide;
+
+    IntegerDivision() {
+        setTitle("Integer Division");
+        setLayout(new GridLayout(4, 2, 5, 5));
+
+        add(new JLabel("Num1:"));
+        num1 = new JTextField();
+        add(num1);
+
+        add(new JLabel("Num2:"));
+        num2 = new JTextField();
+        add(num2);
+
+        add(new JLabel("Result:"));
+        result = new JTextField();
+        result.setEditable(false);
+        add(result);
+
+        divide = new JButton("Divide");
+        add(divide);
+
+        divide.addActionListener(this);
+
+        setSize(300, 200);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setVisible(true);
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        try {
+            int n1 = Integer.parseInt(num1.getText());
+            int n2 = Integer.parseInt(num2.getText());
+
+            int res = n1 / n2;
+            result.setText(String.valueOf(res));
+        }
+        catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this,
+                    "Please enter valid integers!",
+                    "Number Format Exception",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+        catch (ArithmeticException ex) {
+            JOptionPane.showMessageDialog(this,
+                    "Cannot divide by zero!",
+                    "Arithmetic Exception",
+                    JOptionPane.ERROR_MESSAGE);
+        }
+    }
+
+    public static void main(String[] args) {
+        new IntegerDivision();
+    }
+}
