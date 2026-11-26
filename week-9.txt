@@ -1,0 +1,192 @@
+PROGRAM-18 
+
+Implement a continuous chat exchange between two threads. Classes: Sender, Receiver Use wait(), notify(), or notifyAll() for communication. Simulate message sending/receiving in alternate fashion like WhatsApp chat. 
+
+class Chat {
+    boolean senderTurn = true;
+
+    synchronized void sendMessage(String message)
+            throws InterruptedException {
+
+        while (!senderTurn) {
+            wait();
+        }
+
+        System.out.println("Sender: " + message);
+
+        senderTurn = false;
+        notifyAll();
+    }
+
+    synchronized void receiveMessage(String message)
+            throws InterruptedException {
+
+        while (senderTurn) {
+            wait();
+        }
+
+        System.out.println("Receiver: " + message);
+
+        senderTurn = true;
+        notifyAll();
+    }
+}
+
+class Sender extends Thread {
+    Chat chat;
+
+    Sender(Chat chat) {
+        this.chat = chat;
+    }
+
+    public void run() {
+        String[] messages = {
+            "Hi! How are you?",
+            "What are you doing?",
+            "Shall we meet today?",
+            "Okay, see you!"
+        };
+
+        try {
+            for (String message : messages) {
+                chat.sendMessage(message);
+                Thread.sleep(500);
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+}
+
+class Receiver extends Thread {
+    Chat chat;
+
+    Receiver(Chat chat) {
+        this.chat = chat;
+    }
+
+    public void run() {
+        String[] replies = {
+            "I am fine. How about you?",
+            "I am studying Java.",
+            "Yes, that sounds good!",
+            "Bye! See you!"
+        };
+
+        try {
+            for (String reply : replies) {
+                chat.receiveMessage(reply);
+                Thread.sleep(500);
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+}
+
+public class WhatsAppChat {
+    public static void main(String[] args) {
+        Chat chat = new Chat();
+
+        Sender sender = new Sender(chat);
+        Receiver receiver = new Receiver(chat);
+        sender.start();
+        receiver.start();
+    }
+}
+
+
+PROGRAM-18  
+AIM: Build a producer-consumer order system. Producer: Adds orders to queue Consumer: Processes orders one-by-one Use synchronized queue and thread communication to prevent overfill/underflow. 
+
+
+
+package week;
+
+import java.util.LinkedList;
+import java.util.Queue;
+
+class OrderQueue {
+    private Queue<Integer> queue = new LinkedList<>();
+    private final int capacity = 3;
+
+    // Producer adds orders
+    synchronized void produce(int orderId)
+            throws InterruptedException {
+
+        while (queue.size() == capacity) {
+            System.out.println("Queue full. Producer waiting...");
+            wait();
+        }
+
+        queue.add(orderId);
+        System.out.println("Order added: " + orderId);
+
+        notifyAll();
+    }
+
+    // Consumer processes orders
+    synchronized void consume()
+            throws InterruptedException {
+
+        while (queue.isEmpty()) {
+            System.out.println("Queue empty. Consumer waiting...");
+            wait();
+        }
+
+        int orderId = queue.remove();
+        System.out.println("Order processed: " + orderId);
+
+        notifyAll();
+    }
+}
+
+ class Producer1 extends Thread {
+    private OrderQueue orderQueue;
+
+    Producer1(OrderQueue orderQueue) {
+        this.orderQueue = orderQueue;
+    }
+
+    public void run() {
+        try {
+            for (int i = 1; i <= 6; i++) {
+                orderQueue.produce(i);
+                Thread.sleep(500);
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+}
+
+class Consumer1 extends Thread {
+    private OrderQueue orderQueue;
+
+    Consumer1(OrderQueue orderQueue) {
+        this.orderQueue = orderQueue;
+    }
+
+    public void run() {
+        try {
+            for (int i = 1; i <= 6; i++) {
+                Thread.sleep(1000);
+                orderQueue.consume();
+            }
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+    }
+}
+
+public class OrderSystem {
+    public static void main(String[] args) {
+        OrderQueue queue = new OrderQueue();
+
+        Producer1 producer = new Producer1(queue);
+        Consumer1 consumer = new Consumer1(queue);
+
+        producer.start();
+        consumer.start();
+    }
+}

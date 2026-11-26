@@ -1,0 +1,146 @@
+WEEK-8
+
+PROGRAM-15
+
+AIM: Develop an ATM withdrawal simulation with balance validation.
+Class:ATMAccount
+Attributes:accountNumber, holderName, balance
+Methods Required:
+?	withdraw(double amount) throws InsufficientFundsException
+?	deposit(double amount)
+?	checkBalance()
+Generate InsufficientFundsException and handle in a try-catch block.
+
+SOURCE CODE
+
+// Custom Exception
+class InsufficientFundsException extends Exception {
+    InsufficientFundsException(String msg) {
+        super(msg);
+    }
+}
+
+// ATMAccount Class
+class ATMAccount {
+    String accountNumber;
+    String holderName;
+    double balance;
+
+    ATMAccount(String accNo, String name, double balance) {
+        this.accountNumber = accNo;
+        this.holderName = name;
+        this.balance = balance;
+    }
+
+    void withdraw(double amount) throws InsufficientFundsException {
+        if (amount > balance) {
+            throw new InsufficientFundsException("Insufficient Balance!");
+        } else {
+            balance -= amount;
+            System.out.println("Withdrawal Successful. Remaining Balance: " + balance);
+        }
+    }
+
+    void deposit(double amount) {
+        balance += amount;
+        System.out.println("Deposit Successful. Updated Balance: " + balance);
+    }
+
+    void checkBalance() {
+        System.out.println("Current Balance: " + balance);
+    }
+}
+
+// Test Class
+public class ATMTest {
+    public static void main(String[] args) {
+
+        ATMAccount acc = new ATMAccount("12345", "Prathima", 5000);
+
+        try {
+            acc.withdraw(6000); // exceeds balance
+        } catch (InsufficientFundsException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+        acc.deposit(2000);
+        acc.checkBalance();
+    }
+}
+PROGRAM-16
+
+AIM: Create a SOURCE CODE to process student results from user input.
+Exception Conditions:
+?	Marks < 0 or >100 ? throw InvalidMarksException
+?	If total subjects entered = 0 ? throw DivideByZeroException
+Compute total, average and grade only when no exception occurs.
+
+SOURCE CODE
+
+import java.util.Scanner;
+
+// Custom Exception
+class InvalidMarksException extends Exception {
+    InvalidMarksException(String msg) {
+        super(msg);
+    }
+}
+
+public class StudentResult {
+
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        try {
+            System.out.print("Enter number of subjects: ");
+            int n = sc.nextInt();
+
+            if (n == 0) {
+                throw new ArithmeticException("Divide by zero: No subjects entered");
+            }
+
+            int total = 0;
+
+            for (int i = 1; i <= n; i++) {
+                System.out.print("Enter marks for subject " + i + ": ");
+                int marks = sc.nextInt();
+
+                if (marks < 0 || marks > 100) {
+                    throw new InvalidMarksException("Marks must be between 0 and 100");
+                }
+
+                total += marks;
+            }
+
+            double average = total / n;
+
+            System.out.println("Total: " + total);
+            System.out.println("Average: " + average);
+
+            // Grade Calculation
+            if (average >= 75)
+                System.out.println("Grade: A");
+            else if (average >= 60)
+                System.out.println("Grade: B");
+            else if (average >= 50)
+                System.out.println("Grade: C");
+            else
+                System.out.println("Grade: Fail");
+
+        }
+
+        catch (InvalidMarksException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+        catch (ArithmeticException e) {
+            System.out.println("Error: " + e.getMessage());
+        }
+
+        finally {
+            sc.close();
+        }
+    }
+} 
+

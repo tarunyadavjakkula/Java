@@ -1,0 +1,95 @@
+WEEK-7
+
+AIM: Write a program that accepts two integers from user and performs division.
+Use try & multiple catch to handle:
+ArithmeticException (division by zero)
+InputMismatchException (invalid number input)
+Display appropriate error message for each.
+
+SOURCE CODE
+
+import java.util.Scanner;
+import java.util.InputMismatchException;
+
+public class DivisionExceptionDemo {
+    public static void main(String[] args) {
+
+        Scanner sc = new Scanner(System.in);
+
+        try {
+            System.out.print("Enter first integer: ");
+            int a = sc.nextInt();
+
+            System.out.print("Enter second integer: ");
+            int b = sc.nextInt();
+
+            int result = a / b;
+
+            System.out.println("Result: " + result);
+        }
+
+        catch (ArithmeticException e) {
+            System.out.println("Error: Division by zero is not allowed.");
+        }
+
+        catch (InputMismatchException e) {
+            System.out.println("Error: Please enter valid integers only.");
+
+        }
+
+        finally {
+            System.out.println("SOURCE CODE execution completed.");
+            sc.close();
+        }
+    }
+}
+
+PROGRAM-14
+
+AIM: Create two threads, where:
+Thread-A prints even numbers up to 10
+Thread-B prints odd numbers up to 10
+Both must run concurrently and display results alternately. (Use sleep()to visualize the threads execution)
+
+SOURCE CODE
+
+// Thread-A (Even Numbers)
+class EvenThread extends Thread {
+    public void run() {
+        for (int i = 2; i <= 10; i += 2) {
+            System.out.println("Thread-A (Even): " + i);
+            try {
+                Thread.sleep(500); // delay for visualization
+            } catch (InterruptedException e) {
+                System.out.println(e);
+            }
+        }
+    }
+}
+
+// Thread-B (Odd Numbers)
+class OddThread extends Thread {
+    public void run() {
+        for (int i = 1; i <= 9; i += 2) {
+            System.out.println("Thread-B (Odd): " + i);
+            try {
+                Thread.sleep(500); // delay for visualization
+            } catch (InterruptedException e) {
+                System.out.println(e);
+            }
+        }
+    }
+}
+
+// Test Class
+public class ThreadDemo {
+    public static void main(String[] args) {
+
+        EvenThread t1 = new EvenThread();
+        OddThread t2 = new OddThread();
+
+        t1.start();
+        t2.start();
+    }
+}
+

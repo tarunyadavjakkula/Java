@@ -1,0 +1,154 @@
+Week 12: 
+
+23. Write a java program that handles all mouse events and shows the event name at the center of the window when a mouse event is fired.
+
+import java.awt.*;
+import java.awt.event.*;
+import javax.swing.*;
+
+public class MouseEventsDemo extends JFrame
+        implements MouseListener, MouseMotionListener {
+
+    String message = "Perform a mouse event";
+
+    MouseEventsDemo() {
+        setTitle("Mouse Events Demo");
+        setSize(500, 400);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        addMouseListener(this);
+        addMouseMotionListener(this);
+
+        setVisible(true);
+    }
+
+    public void paint(Graphics g) {
+        super.paint(g);
+
+        g.setFont(new Font("Arial", Font.BOLD, 20));
+
+        FontMetrics fm = g.getFontMetrics();
+
+        int x = (getWidth() - fm.stringWidth(message)) / 2;
+        int y = (getHeight() + fm.getAscent()) / 2;
+
+        g.drawString(message, x, y);
+    }
+
+    // MouseListener methods
+
+    public void mouseClicked(MouseEvent e) {
+        message = "Mouse Clicked";
+        repaint();
+    }
+
+    public void mousePressed(MouseEvent e) {
+        message = "Mouse Pressed";
+        repaint();
+    }
+
+    public void mouseReleased(MouseEvent e) {
+        message = "Mouse Released";
+        repaint();
+    }
+
+    public void mouseEntered(MouseEvent e) {
+        message = "Mouse Entered";
+        repaint();
+    }
+
+    public void mouseExited(MouseEvent e) {
+        message = "Mouse Exited";
+        repaint();
+    }
+
+    // MouseMotionListener methods
+
+    public void mouseMoved(MouseEvent e) {
+        message = "Mouse Moved";
+        repaint();
+    }
+
+    public void mouseDragged(MouseEvent e) {
+        message = "Mouse Dragged";
+        repaint();
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new MouseEventsDemo());
+    }
+}
+
+24.Write a program that creates a user interface to perform integer divisions. The user enters two numbers in the text fields, Num1 and Num2. The division of Num1 and Num2 is displayed in the Result field when the Divide button is clicked. If Num1 or Num2 were not an integer, the program would throw a Number Format Exception. If Num2 were Zero, the program would throw an Arithmetic Exception Display the exception in a message dialog box.
+
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class IntegerDivision extends JFrame implements ActionListener {
+
+    JTextField num1, num2, result;
+    JButton divide;
+
+    IntegerDivision() {
+        setTitle("Integer Division");
+        setLayout(new GridLayout(4, 2, 10, 10));
+
+        add(new JLabel("Num1:"));
+        num1 = new JTextField();
+        add(num1);
+
+        add(new JLabel("Num2:"));
+        num2 = new JTextField();
+        add(num2);
+
+        add(new JLabel("Result:"));
+        result = new JTextField();
+        result.setEditable(false);
+        add(result);
+
+        divide = new JButton("Divide");
+        add(divide);
+        add(new JLabel(""));
+
+        divide.addActionListener(this);
+
+        setSize(350, 200);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+        setVisible(true);
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        try {
+            int n1 = Integer.parseInt(num1.getText());
+            int n2 = Integer.parseInt(num2.getText());
+
+            int res = n1 / n2;
+
+            result.setText(String.valueOf(res));
+        }
+        catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(
+                this,
+                "Please enter valid integers!",
+                "Number Format Exception",
+                JOptionPane.ERROR_MESSAGE
+            );
+        }
+        catch (ArithmeticException ex) {
+            JOptionPane.showMessageDialog(
+                this,
+                "Division by zero is not allowed!",
+                "Arithmetic Exception",
+                JOptionPane.ERROR_MESSAGE
+            );
+        }
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> new IntegerDivision());
+    }
+} 
