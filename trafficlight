@@ -1,0 +1,65 @@
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+
+public class TrafficLight extends JFrame implements ActionListener {
+    JRadioButton r, y, g;
+    JPanel p;
+    String light = "";
+
+    TrafficLight() {
+        setTitle("Traffic Light");
+        setSize(300, 400);
+
+        p = new JPanel() {
+            protected void paintComponent(Graphics gr) {
+                super.paintComponent(gr);
+                gr.setColor(Color.GRAY);
+                gr.fillOval(100, 30, 60, 60);
+                gr.fillOval(100, 110, 60, 60);
+                gr.fillOval(100, 190, 60, 60);
+
+                if (light.equals("RED")) {
+                    gr.setColor(Color.RED);
+                    gr.fillOval(100, 30, 60, 60);
+                } else if (light.equals("YELLOW")) {
+                    gr.setColor(Color.YELLOW);
+                    gr.fillOval(100, 110, 60, 60);
+                } else if (light.equals("GREEN")) {
+                    gr.setColor(Color.GREEN);
+                    gr.fillOval(100, 190, 60, 60);
+                }
+            }
+        };
+        add(p, BorderLayout.CENTER);
+
+        r = new JRadioButton("Red");
+        y = new JRadioButton("Yellow");
+        g = new JRadioButton("Green");
+
+        ButtonGroup bg = new ButtonGroup();
+        bg.add(r); bg.add(y); bg.add(g);
+
+        JPanel bp = new JPanel();
+        bp.add(r); bp.add(y); bp.add(g);
+        add(bp, BorderLayout.SOUTH);
+
+        r.addActionListener(this);
+        y.addActionListener(this);
+        g.addActionListener(this);
+
+        setDefaultCloseOperation(EXIT_ON_CLOSE);
+        setVisible(true);
+    }
+
+    public void actionPerformed(ActionEvent e) {
+        if (e.getSource() == r) light = "RED";
+        else if (e.getSource() == y) light = "YELLOW";
+        else if (e.getSource() == g) light = "GREEN";
+        p.repaint();
+    }
+
+    public static void main(String[] args) {
+        new TrafficLight();
+    }
+}
